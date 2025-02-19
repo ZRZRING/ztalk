@@ -1,0 +1,48 @@
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Ignore IDE specific files
+.idea/
+*.sublime-project
+*.sublime-settings
+*.sublime-workspace
+
+# Ignore node.js specific files
+node_modules/
+
+# Ignore python specific files
+__pycache__/
+*.pyc
+
+# Ignore java specific files
+*.class
+
+# Ignore build artifacts
+*.log
+*.swp
+*.out
+
+# Ignore eclipse specific files
+.classpath
+.project
+.settings/
+
+# Ignore maven specific files
+target/
+pom.xml.classpath
+
+# Ignore gradle specific files
+.gradle/
+build/
+
+# Ignore vscode specific files
+.vscode/
+
+# Ignore others
+*.exe
+*.dll
+*.tmp
+*.bak
+*.orig
