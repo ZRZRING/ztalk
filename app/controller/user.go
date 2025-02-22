@@ -33,7 +33,7 @@ func SignUpHandler(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println(p)
+	fmt.Printf("注册用户: %v", p)
 	if err := service.SignUp(p); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"msg": "注册失败",

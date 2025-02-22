@@ -14,6 +14,13 @@ import (
 
 // web 应用脚手架
 
+func syncLogger(l *zap.Logger) {
+	err := l.Sync()
+	if err != nil {
+		fmt.Printf("sync logger failed, message:%v\n", err)
+	}
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("need config file.eg: config.yaml")
@@ -26,23 +33,20 @@ func main() {
 		return
 	}
 
+	cfg := settings.Conf
+	
 	// 初始化日志系统
-	if err := logger.Init(settings.Conf.LogConfig); err != nil {
+	if err := logger.Init(cfg.LogConfig, cfg.Mode); err != nil {
 		fmt.Printf("init logger failed, message:%v\n", err)
 		return
 	}
 
-	defer func(l *zap.Logger) {
-		err := l.Sync()
-		if err != nil {
-			fmt.Printf("sync logger failed, message:%v\n", err)
-		}
-	}(zap.L())
-
+	defer syncLogger(zap.L())
+	
 	zap.L().Debug("logger init success")
 
 	// 初始化 MySQL 连接
-	if err := mysql.Init(settings.Conf.MySQLConfig); err != nil {
+	if err := mysql.Init(cfg.MySQLConfig); err != nil {
 		fmt.Printf("init mysql failed, message:%v\n", err)
 		return
 	}
@@ -52,7 +56,7 @@ func main() {
 	defer mysql.Close()
 
 	// 初始化 Redis 连接
-	if err := redis.Init(settings.Conf.RedisConfig); err != nil {
+	if err := redis.Init(cfg.RedisConfig); err != nil {
 		fmt.Printf("init redis failed, message:%v\n", err)
 		return
 	}
@@ -62,7 +66,7 @@ func main() {
 	defer redis.Close()
 
 	// 初始化 Snowflake 包
-	if err := utils.InitSnowflake(settings.Conf.StartTime, settings.Conf.MachineID); err != nil {
+	if err := utils.InitSnowflake(cfg.StartTime, cfg.MachineID); err != nil {
 		fmt.Printf("init snowflake failed, message:%v\n", err)
 		return
 	}
@@ -74,9 +78,9 @@ func main() {
 	}
 
 	// 注册并启动路由器
-	mainRouter := router.Setup(settings.Conf.Mode)
+	mainRouter := router.Setup(cfg.Mode)
 
-	if err := mainRouter.Run(fmt.Sprintf(":%d", settings.Conf.Port)); err != nil {
+	if err := mainRouter.Run(fmt.Sprintf(":%d", cfg.Port)); err != nil {
 		fmt.Printf("Run http server faild, message:%v\n", err)
 		return
 	}

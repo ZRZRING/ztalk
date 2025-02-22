@@ -15,7 +15,7 @@ import (
 	"ztalk/settings"
 )
 
-func Init(cfg *settings.LogConfig) (err error) {
+func Init(cfg *settings.LogConfig, mode string) (err error) {
 	writeSyncer := getLogWriter(
 		cfg.Filename,
 		cfg.MaxSize,
@@ -27,7 +27,16 @@ func Init(cfg *settings.LogConfig) (err error) {
 	if err = lv.UnmarshalText([]byte(cfg.Level)); err != nil {
 		return err
 	}
-	core := zapcore.NewCore(encoder, writeSyncer, lv)
+	var core zapcore.Core
+	if mode == "dev" {
+		consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
+		core = zapcore.NewTee(
+			zapcore.NewCore(encoder, writeSyncer, lv),
+			zapcore.NewCore(consoleEncoder, zapcore.Lock(os.Stdout), zapcore.DebugLevel),
+		)
+	} else {
+		core = zapcore.NewCore(encoder, writeSyncer, lv)
+	}
 	lg := zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(lg)
 	return
