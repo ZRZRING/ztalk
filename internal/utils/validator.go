@@ -2,10 +2,9 @@ package utils
 
 import (
 	"fmt"
-	zhTranslations "github.com/go-playground/validator/v10/translations/zh"
 	"reflect"
 	"strings"
-	"ztalk/app/models"
+	"ztalk/internal/models"
 
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
@@ -13,6 +12,7 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	enTranslations "github.com/go-playground/validator/v10/translations/en"
+	zhTranslations "github.com/go-playground/validator/v10/translations/zh"
 )
 
 // Trans 定义一个全局翻译器

@@ -6,7 +6,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"go.uber.org/zap"
 )
 
 var db *sqlx.DB
@@ -24,7 +23,6 @@ func Init(config *settings.MySQLConfig) (err error) {
 	if err != nil {
 		return
 	}
-	zap.L().Debug("mysql info", zap.Any("db", db))
 	db.SetMaxOpenConns(config.MaxOpenConns)
 	db.SetMaxIdleConns(config.MaxIdleConns)
 	return
