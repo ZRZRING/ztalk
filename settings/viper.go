@@ -50,9 +50,9 @@ type RedisConfig struct {
 func Init(filePath string) (err error) {
 	// 1. 接受参数
 	viper.SetConfigFile(filePath)
-	
+
 	// 2. 直接获取路径
-	// viper.SetConfigFile("./config.yaml")
+	// viper.SetConfigFile("./dev.yaml")
 
 	// 3. 指定配置文件名和路径，指定配置文件名（不带后缀），指定查找配置文件的路径
 	// viper.SetConfigName("config")
@@ -80,6 +80,6 @@ func Init(filePath string) (err error) {
 			return
 		}
 	})
-	
+
 	return
 }

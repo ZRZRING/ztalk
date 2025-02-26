@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"os"
+	"ztalk/internal/controller"
 	"ztalk/internal/repository/mysql"
 	"ztalk/internal/repository/redis"
 	"ztalk/internal/utils"
@@ -21,7 +22,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("need config file.eg: config.yaml")
+		fmt.Println("need config file.eg: dev.yaml")
 		return
 	}
 
@@ -66,7 +67,7 @@ func main() {
 	zap.L().Info("snowflake\t初始化完成")
 
 	// 初始化 Validator 包
-	if err := utils.InitValidator("zh"); err != nil {
+	if err := controller.InitValidator("zh"); err != nil {
 		zap.L().Error("validator\t初始化失败", zap.Error(err))
 		return
 	}

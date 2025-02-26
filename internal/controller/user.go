@@ -7,25 +7,26 @@ import (
 	"ztalk/internal/models"
 	"ztalk/internal/repository/mysql"
 	"ztalk/internal/service"
-	"ztalk/internal/utils"
 )
 
-// checkValidator 判断 err 是不是 validator.ValidationErrors 类型
+// checkValidator 判断 err 是不是 validator.ValidationErrors 类型，是则翻译成中文
 func checkValidator(c *gin.Context, err error) {
 	var errs validator.ValidationErrors
-	ok := errors.As(err, &errs)
-	if !ok {
+	if !errors.As(err, &errs) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	ResponseErrorWithMsg(c, CodeInvalidParam, utils.RemoveTopStruct(errs.Translate(utils.Trans)))
+	msg := errs.Translate(Trans)
+	// 【强迫症】
+	// msg = RemoveTopStruct(msg)
+	ResponseErrorWithMsg(c, CodeInvalidParam, msg)
 	return
 }
 
 // SignUpHandler 用户注册
 func SignUpHandler(c *gin.Context) {
 	p := new(models.SignUpParam)
-	if err := c.ShouldBind(p); err != nil {
+	if err := c.ShouldBindJSON(p); err != nil {
 		// zap.L().Error("注册时传入非法参数", zap.Error(err))
 		checkValidator(c, err)
 		return
@@ -47,7 +48,7 @@ func SignUpHandler(c *gin.Context) {
 // LoginHandler 用户登录
 func LoginHandler(c *gin.Context) {
 	p := new(models.LoginParam)
-	if err := c.ShouldBind(p); err != nil {
+	if err := c.ShouldBindJSON(p); err != nil {
 		// zap.L().Error("登录时传入非法参数", zap.Error(err))
 		checkValidator(c, err)
 		return

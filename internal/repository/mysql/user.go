@@ -46,5 +46,6 @@ func Login(user *models.User) (err error) {
 	if userDb.Password != user.Password {
 		return ErrorInvalidPassword
 	}
+	user.UserID = userDb.UserID
 	return
 }

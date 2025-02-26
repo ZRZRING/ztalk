@@ -8,7 +8,7 @@ import (
 
 func TestMySQLConfig(t *testing.T) {
 	// 初始化配置
-	err := Init("../config.yaml")
+	err := Init("../dev.yaml")
 	assert.NoError(t, err, "Failed to load config file")
 
 	// 获取 MySQL 配置

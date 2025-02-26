@@ -21,6 +21,13 @@ func Login(p *models.LoginParam) (user *models.User, err error) {
 		Username: p.Username,
 		Password: utils.MD5(p.Password),
 	}
-	err = mysql.Login(user)
+	if err = mysql.Login(user); err != nil {
+		return
+	}
+	token, err := utils.GenToken(user.UserID, user.Username)
+	if err != nil {
+		return
+	}
+	user.Token = token
 	return
 }

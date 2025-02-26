@@ -6,5 +6,12 @@
 
 ```bash
 go mod tidy
-go run main.go config.yaml
+go run main.go config/dev.yaml
+```
+
+使用 [air](https://github.com/air-verse/air) 可以进行热部署
+
+```bash
+go install github.com/air-verse/air@latest
+air
 ```

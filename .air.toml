@@ -1,0 +1,85 @@
+# [Air](https://github.com/air-verse/air) 的配置文件，采用 TOML 格式
+
+# 工作目录
+# . 或绝对路径，请注意以下目录必须位于根目录下。
+root = "."
+tmp_dir = "tmp"
+
+[build]
+# 每次构建前运行的命令数组
+pre_cmd = []
+# 普通的 shell 命令。你也可以使用 `make`。
+cmd = "go build -o tmp/main.exe ."
+# 按下 ^C 后运行的命令数组
+post_cmd = []
+# 由 `cmd` 生成的二进制文件。
+bin = "tmp/main.exe"
+# 自定义二进制文件，可以在运行应用程序时设置环境变量。
+full_bin = "tmp/main.exe"
+# 运行二进制文件时添加额外的参数（bin/full_bin）。将运行 './tmp/main hello world'。
+args_bin = ["config/dev.yaml"]
+# 监听这些文件扩展名。
+include_ext = ["go", "yaml"]
+# 忽略这些文件扩展名或目录。
+exclude_dir = [".git", ".vscode", ".idea", "assets", "tmp", "vendor", "frontend/node_modules"]
+# 如果你指定了这些目录，则监听它们。
+include_dir = []
+# 监听这些文件。
+include_file = []
+# 排除这些文件。
+exclude_file = []
+# 排除特定的正则表达式。
+exclude_regex = ["_test\\.go"]
+# 排除未更改的文件。
+exclude_unchanged = true
+# 对目录使用符号链接
+follow_symlink = true
+# 此日志文件位于你的 tmp_dir 中。
+log = "air.log"
+# 使用轮询方式监听文件更改，而不是使用 fsnotify。
+poll = false
+# 轮询间隔（默认为最小间隔 500ms）。
+poll_interval = 500 # 毫秒
+# 如果文件更改过于频繁，不必每次都触发构建。
+delay = 0 # 毫秒
+# 当构建发生错误时，停止运行旧的二进制文件。
+stop_on_error = true
+# 在终止进程之前发送中断信号（Windows 不支持此功能）
+send_interrupt = false
+# 发送中断信号后的延迟
+kill_delay = 500 # 纳秒
+# 是否重新运行二进制文件
+rerun = false
+# 每次执行后的延迟
+rerun_delay = 500
+
+[log]
+# 显示日志时间
+time = false
+# 仅显示主日志（静默监听器、构建、运行器）
+main_only = false
+# 静默 air 生成的所有日志
+silent = false
+
+[color]
+# 自定义每个部分的颜色。如果未找到颜色，则使用原始应用程序日志的颜色。
+main = "magenta"
+watcher = "cyan"
+build = "yellow"
+runner = "green"
+
+[misc]
+# 退出时删除 tmp 目录
+clean_on_exit = true
+
+[screen]
+# 重建时清屏
+clear_on_rebuild = true
+# 保持滚动
+keep_scroll = true
+
+[proxy]
+# 在浏览器中启用实时重新加载。
+enabled = true
+proxy_port = 8090
+app_port = 8080

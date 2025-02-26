@@ -1,4 +1,4 @@
-package utils
+package controller
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 	zhTranslations "github.com/go-playground/validator/v10/translations/zh"
 )
 
-// Trans 定义一个全局翻译器
+// Trans 定义一个响应的翻译器
 var Trans ut.Translator
 
 // RemoveTopStruct 去除结构体名前缀
@@ -49,11 +49,11 @@ func SignUpParamStructLevelValidation(sl validator.StructLevel) {
 func InitValidator(locale string) (err error) {
 	// 修改 gin 框架中的 Validator 引擎属性，实现自定制
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		// 注册一个获取json tag的自定义方法
-		v.RegisterTagNameFunc(RegisterJsonTag)
+		// 【强迫症】注册一个获取 json tag 的自定义方法
+		// v.RegisterTagNameFunc(RegisterJsonTag)
 
-		// 为SignUpParam注册自定义校验方法
-		v.RegisterStructValidation(SignUpParamStructLevelValidation, models.SignUpParam{})
+		// 【强迫症】为 SignUpParam 注册自定义校验方法
+		// v.RegisterStructValidation(SignUpParamStructLevelValidation, models.SignUpParam{})
 
 		// 注册中英文
 		zhT := zh.New()
