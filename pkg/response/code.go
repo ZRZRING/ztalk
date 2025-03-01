@@ -1,4 +1,4 @@
-package controller
+package response
 
 type ResCode int64
 

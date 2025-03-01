@@ -3,14 +3,15 @@ package service
 import (
 	"ztalk/internal/models"
 	"ztalk/internal/repository/mysql"
-	"ztalk/internal/utils"
+	"ztalk/pkg/jwt"
+	utils2 "ztalk/pkg/utils"
 )
 
 func SignUp(p *models.SignUpParam) (user *models.User, err error) {
 	user = &models.User{
-		UserID:   utils.GenID(),
+		UserID:   utils2.GenID(),
 		Username: p.Username,
-		Password: utils.MD5(p.Password),
+		Password: utils2.MD5(p.Password),
 	}
 	err = mysql.Register(user)
 	return
@@ -19,12 +20,12 @@ func SignUp(p *models.SignUpParam) (user *models.User, err error) {
 func Login(p *models.LoginParam) (user *models.User, err error) {
 	user = &models.User{
 		Username: p.Username,
-		Password: utils.MD5(p.Password),
+		Password: utils2.MD5(p.Password),
 	}
 	if err = mysql.Login(user); err != nil {
 		return
 	}
-	token, err := utils.GenToken(user.UserID, user.Username)
+	token, err := jwt.GenToken(user.UserID, user.Username)
 	if err != nil {
 		return
 	}

@@ -1,11 +1,7 @@
-package controller
+package translate
 
 import (
 	"fmt"
-	"reflect"
-	"strings"
-	"ztalk/internal/models"
-
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/locales/zh"
@@ -13,40 +9,16 @@ import (
 	"github.com/go-playground/validator/v10"
 	enTranslations "github.com/go-playground/validator/v10/translations/en"
 	zhTranslations "github.com/go-playground/validator/v10/translations/zh"
+	"reflect"
+	"strings"
+	"ztalk/internal/models"
 )
 
 // Trans 定义一个响应的翻译器
 var Trans ut.Translator
 
-// RemoveTopStruct 去除结构体名前缀
-// 实现方法：找到最后一个出现的 '.' 截取之后的所有字符
-func RemoveTopStruct(fields map[string]string) map[string]string {
-	res := map[string]string{}
-	for field, err := range fields {
-		res[field[strings.Index(field, ".")+1:]] = err
-	}
-	return res
-}
-
-// RegisterJsonTag 获取 json tag
-func RegisterJsonTag(fld reflect.StructField) string {
-	name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
-	if name == "-" {
-		return ""
-	}
-	return name
-}
-
-// SignUpParamStructLevelValidation 自定义 SignUpParam 结构体校验函数
-func SignUpParamStructLevelValidation(sl validator.StructLevel) {
-	su := sl.Current().Interface().(models.SignUpParam)
-	if su.Password != su.RePassword {
-		sl.ReportError(su.RePassword, "re_password", "RePassword", "eqfield", "password")
-	}
-}
-
-// InitValidator 初始化翻译器
-func InitValidator(locale string) (err error) {
+// Init 初始化翻译器
+func Init(locale string) (err error) {
 	// 修改 gin 框架中的 Validator 引擎属性，实现自定制
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		// 【强迫症】注册一个获取 json tag 的自定义方法
@@ -84,4 +56,31 @@ func InitValidator(locale string) (err error) {
 		return
 	}
 	return
+}
+
+// RemoveTopStruct 去除结构体名前缀
+// 实现方法：找到最后一个出现的 '.' 截取之后的所有字符
+func RemoveTopStruct(fields map[string]string) map[string]string {
+	res := map[string]string{}
+	for field, err := range fields {
+		res[field[strings.Index(field, ".")+1:]] = err
+	}
+	return res
+}
+
+// RegisterJsonTag 获取 json tag
+func RegisterJsonTag(fld reflect.StructField) string {
+	name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
+	if name == "-" {
+		return ""
+	}
+	return name
+}
+
+// SignUpParamStructLevelValidation 自定义 SignUpParam 结构体校验函数
+func SignUpParamStructLevelValidation(sl validator.StructLevel) {
+	su := sl.Current().Interface().(models.SignUpParam)
+	if su.Password != su.RePassword {
+		sl.ReportError(su.RePassword, "re_password", "RePassword", "eqfield", "password")
+	}
 }

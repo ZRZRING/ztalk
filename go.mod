@@ -1,6 +1,8 @@
 module ztalk
 
-go 1.23.2
+go 1.23.4
+
+toolchain go1.23.6
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
@@ -16,10 +18,22 @@ require (
 )
 
 require (
+	github.com/BurntSushi/toml v1.4.1-0.20240526193622-a339e1f7089c // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
+	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.36.2 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
+	golang.org/x/exp/typeparams v0.0.0-20250218142911-aa4b98e5adaa // indirect
+	golang.org/x/mod v0.23.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
+	golang.org/x/telemetry v0.0.0-20250221144447-d58820209c11 // indirect
+	golang.org/x/tools v0.30.1-0.20250221230316-5055f70f240c // indirect
+	golang.org/x/tools/gopls v0.18.1 // indirect
+	golang.org/x/vuln v1.1.4 // indirect
+	honnef.co/go/tools v0.6.0 // indirect
+	mvdan.cc/gofumpt v0.7.0 // indirect
+	mvdan.cc/xurls/v2 v2.6.0 // indirect
 )
 
 require (

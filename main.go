@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"os"
-	"ztalk/internal/controller"
 	"ztalk/internal/repository/mysql"
 	"ztalk/internal/repository/redis"
-	"ztalk/internal/utils"
 	"ztalk/logger"
+	"ztalk/pkg/translate"
+	"ztalk/pkg/utils"
 	"ztalk/router"
 	"ztalk/settings"
 )
@@ -45,7 +45,7 @@ func main() {
 
 	// 初始化 MySQL 连接
 	if err := mysql.Init(cfg.MySQLConfig); err != nil {
-		zap.L().Error("snowflake\t初始化失败", zap.Error(err))
+		zap.L().Error("mysql\t初始化失败", zap.Error(err))
 		return
 	}
 	zap.L().Info("mysql\t初始化完成")
@@ -53,7 +53,7 @@ func main() {
 
 	// 初始化 Redis 连接
 	if err := redis.Init(cfg.RedisConfig); err != nil {
-		zap.L().Error("snowflake\t初始化失败", zap.Error(err))
+		zap.L().Error("redis\t初始化失败", zap.Error(err))
 		return
 	}
 	zap.L().Info("redis\t初始化完成")
@@ -67,11 +67,11 @@ func main() {
 	zap.L().Info("snowflake\t初始化完成")
 
 	// 初始化 Validator 包
-	if err := controller.InitValidator("zh"); err != nil {
-		zap.L().Error("validator\t初始化失败", zap.Error(err))
+	if err := translate.Init("zh"); err != nil {
+		zap.L().Error("translate\t初始化失败", zap.Error(err))
 		return
 	}
-	zap.L().Info("validator\t初始化完成")
+	zap.L().Info("translate\t初始化完成")
 
 	// 注册并启动路由器
 	mainRouter := router.Setup(cfg.Mode)
