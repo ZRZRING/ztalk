@@ -1,14 +1,29 @@
 package service
 
 import (
+	"database/sql"
+	"errors"
 	"ztalk/internal/models"
-	"ztalk/internal/repository/mysql"
+	"ztalk/internal/mysql"
+	"ztalk/pkg/message"
+
+	"go.uber.org/zap"
 )
 
-func GetCommunityList() ([]*models.Community, error) {
-	return mysql.GetCommunityList()
+func GetCommunityList() (data []*models.Community, err error) {
+	data, err = mysql.GetAllCommunities()
+	if errors.Is(err, sql.ErrNoRows) {
+		zap.L().Warn("there is no community in database")
+		err = nil
+	}
+	return
 }
 
-func GetCommunityById(id int64) (*models.CommunityDetail, error) {
-	return mysql.GetCommunityDetailById(id)
+func GetCommunityByID(id int64) (data *models.Community, err error) {
+	data, err = mysql.GetCommunityByID(id)
+	if errors.Is(err, sql.ErrNoRows) {
+		err = message.ErrInvalidID
+		return
+	}
+	return
 }

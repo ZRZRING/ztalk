@@ -1,11 +1,12 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"strconv"
 	"ztalk/internal/service"
 	"ztalk/pkg/response"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func CommunityHandler(c *gin.Context) {
@@ -21,9 +22,14 @@ func CommunityHandler(c *gin.Context) {
 func CommunityDetailHandler(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
-	data, err := service.GetCommunityById(id)
 	if err != nil {
-		zap.L().Error("service.GetCommunityById() failed", zap.Error(err))
+		zap.L().Error("strconv.ParseInt() failed", zap.Error(err))
+		response.Error(c, response.CodeServerBusy)
+		return
+	}
+	data, err := service.GetCommunityByID(id)
+	if err != nil {
+		zap.L().Error("service.GetCommunityByID() failed", zap.Error(err))
 		response.Error(c, response.CodeServerBusy)
 		return
 	}

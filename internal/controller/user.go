@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"go.uber.org/zap"
 	"ztalk/internal/models"
 	"ztalk/internal/service"
 	"ztalk/pkg/message"
@@ -29,14 +30,13 @@ func checkValidator(c *gin.Context, err error) {
 func SignUpHandler(c *gin.Context) {
 	p := new(models.SignUpParam)
 	if err := c.ShouldBindJSON(p); err != nil {
-		// zap.L().Error("c.ShouldBindJSON() failed", zap.Error(err))
+		zap.L().Error("c.ShouldBindJSON() failed", zap.Error(err))
 		checkValidator(c, err)
 		return
 	}
-	// zap.L().Info("SignUpParam", zap.Any("SignUpParam", p))
 	user, err := service.SignUp(p)
 	if err != nil {
-		// zap.L().Error("service.SignUp() failed", zap.Error(err))
+		zap.L().Error("service.SignUp() failed", zap.Error(err))
 		if errors.Is(err, message.ErrUserExist) {
 			response.Error(c, response.CodeUserExist)
 			return
@@ -51,15 +51,13 @@ func SignUpHandler(c *gin.Context) {
 func LoginHandler(c *gin.Context) {
 	p := new(models.LoginParam)
 	if err := c.ShouldBindJSON(p); err != nil {
-		// zap.L().Error("c.ShouldBindJSON() failed", zap.Error(err))
+		zap.L().Error("c.ShouldBindJSON() failed", zap.Error(err))
 		checkValidator(c, err)
 		return
 	}
-	// zap.L().Info("LoginParam", zap.Any("LoginParam", p))
 	user, err := service.Login(p)
 	if err != nil {
-		// zap.L().Debug("username", zap.String("username", p.Username))
-		// zap.L().Error("service.Login() failed", zap.Error(err))
+		zap.L().Error("service.Login() failed", zap.Error(err))
 		if errors.Is(err, message.ErrInvalidPassword) {
 			response.Error(c, response.CodeInvalidPassword)
 			return

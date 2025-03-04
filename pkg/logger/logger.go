@@ -12,7 +12,7 @@ import (
 	"runtime/debug"
 	"strings"
 	"time"
-	"ztalk/settings"
+	"ztalk/pkg/settings"
 )
 
 func Init(cfg *settings.LogConfig, mode string) (err error) {
@@ -105,7 +105,7 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 						zap.String("request", string(httpRequest)),
 					)
 					// If the connection is dead, we can't write a status to it.
-					c.Error(err.(error)) // nolint: errcheck
+					_ = c.Error(err.(error)) // nolint: errcheck
 					c.Abort()
 					return
 				}

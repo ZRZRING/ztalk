@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 	"ztalk/internal/controller"
-	"ztalk/logger"
 	"ztalk/pkg/jwt"
+	"ztalk/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,6 +26,8 @@ func Setup(mode string) (r *gin.Engine) {
 		{
 			v1.GET("/community", controller.CommunityHandler)
 			v1.GET("/community/:id", controller.CommunityDetailHandler)
+			v1.GET("/post/:id", controller.GetPostDetailHandler)
+			v1.GET("/posts/", controller.GetPostListHandler)
 			v1.POST("/post", controller.CreatePostHandler)
 		}
 	}

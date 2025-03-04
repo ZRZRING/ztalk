@@ -3,7 +3,7 @@ package redis
 import (
 	"fmt"
 	"github.com/go-redis/redis"
-	"ztalk/settings"
+	"ztalk/pkg/settings"
 )
 
 var rdb *redis.Client

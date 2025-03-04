@@ -2,10 +2,9 @@ package mysql
 
 import (
 	"fmt"
-	"ztalk/settings"
-
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"ztalk/pkg/settings"
 )
 
 var db *sqlx.DB

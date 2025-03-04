@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"os"
-	"ztalk/internal/repository/mysql"
-	"ztalk/internal/repository/redis"
-	"ztalk/logger"
+	"ztalk/internal/mysql"
+	"ztalk/internal/redis"
+	"ztalk/internal/router"
+	"ztalk/pkg/logger"
+	"ztalk/pkg/settings"
 	"ztalk/pkg/translate"
 	"ztalk/pkg/utils"
-	"ztalk/router"
-	"ztalk/settings"
 )
 
 // func syncLogger(l *zap.Logger) {
