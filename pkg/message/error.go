@@ -8,4 +8,6 @@ var (
 	ErrInvalidPassword = errors.New("用户名或密码错误")
 	ErrInvalidID       = errors.New("无效的ID")
 	ErrUserNotLogin    = errors.New("用户未登录")
+	ErrVoteTimeExpire  = errors.New("投票时间已过")
+	ErrVoteRepeated    = errors.New("不允许重复投票")
 )
