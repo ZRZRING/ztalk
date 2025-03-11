@@ -1,15 +1,15 @@
 package request
 
 import (
-	"github.com/gin-gonic/gin"
+	"ztalk/internal/models"
 	"ztalk/pkg/message"
-)
 
-const CtxUserIDKey = "userID"
+	"github.com/gin-gonic/gin"
+)
 
 // GetCurrentUserID 获取当前登录的用户ID
 func GetCurrentUserID(c *gin.Context) (userID int64, err error) {
-	uid, ok := c.Get(CtxUserIDKey)
+	uid, ok := c.Get(models.ContextUserIDKey)
 	if !ok {
 		err = message.ErrUserNotLogin
 		return

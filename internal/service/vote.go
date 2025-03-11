@@ -10,11 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
-const (
-	secondsInOneWeek = 7 * 24 * 3600
-)
-
-func Vote(id int64, p *models.Vote) (err error) {
+func Vote(id int64, p *models.VoteParam) (err error) {
 	postID, userID := p.PostID, strconv.FormatInt(id, 10)
 
 	// 判断投票时间限制
@@ -24,7 +20,7 @@ func Vote(id int64, p *models.Vote) (err error) {
 		return
 	}
 	period := float64(time.Now().Unix()) - postTime
-	if period > secondsInOneWeek {
+	if period > models.SecondsInOneWeek {
 		return message.ErrVoteTimeExpire
 	}
 

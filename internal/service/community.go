@@ -13,7 +13,7 @@ import (
 func GetCommunityList() (data []*models.Community, err error) {
 	data, err = mysql.GetAllCommunities()
 	if errors.Is(err, sql.ErrNoRows) {
-		zap.L().Warn("there is no community in database")
+		zap.L().Warn("mysql.GetAllCommunities() return 0 data")
 		err = nil
 	}
 	return

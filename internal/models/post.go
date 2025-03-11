@@ -13,7 +13,8 @@ type Post struct {
 }
 
 type PostDetail struct {
-	AuthorName string `json:"author_name"` // 作者名
 	*Post
+	AuthorName string `json:"author_name"`
+	Score      int64  `json:"vote_num"`
 	*Community `json:"community"`
 }

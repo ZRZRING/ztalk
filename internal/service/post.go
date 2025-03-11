@@ -1,6 +1,7 @@
 package service
 
 import (
+	"strconv"
 	"ztalk/internal/models"
 	"ztalk/internal/mysql"
 	"ztalk/internal/redis"
@@ -44,29 +45,38 @@ func GetPostDetail(id int64) (data *models.PostDetail, err error) {
 	return
 }
 
-func GetPostList(offset, limit int64) (data []*models.PostDetail, err error) {
-	posts, err := mysql.GetAllPosts(offset, limit)
+func GetPosts(p *models.PostListParam) (data []*models.PostDetail, err error) {
+	start, end := p.GetStartEnd()
+	ids, err := redis.GetSortedPostIDsInRange(p.Order, start, end)
 	if err != nil {
+		zap.L().Error("redis.GetSortedPostsInRange() failed", zap.Error(err))
 		return
 	}
-	data = make([]*models.PostDetail, 0, len(posts))
-	for _, post := range posts {
-		user, err := mysql.GetUserByID(post.AuthorID)
+	if len(ids) == 0 {
+		zap.L().Warn("redis.GetSortedPostsInRange() return 0 data")
+		return
+	}
+	data = make([]*models.PostDetail, 0, len(ids))
+	for _, idStr := range ids {
+		id, err := strconv.ParseInt(idStr, 10, 64)
 		if err != nil {
-			zap.L().Error("mysql.GetUserByID() failed", zap.Error(err), zap.Any("postID", post))
+			zap.L().Error("strconv.ParseInt() failed", zap.Error(err))
 			continue
 		}
-		community, err := mysql.GetCommunityByID(post.CommunityID)
+		post, err := GetPostDetail(id)
 		if err != nil {
 			zap.L().Error("mysql.GetCommunityByID() failed", zap.Error(err), zap.Any("postID", post))
 			continue
 		}
-		postDetail := &models.PostDetail{
-			AuthorName: user.Username,
-			Post:       post,
-			Community:  community,
-		}
-		data = append(data, postDetail)
+		data = append(data, post)
+	}
+	scores, err := redis.GetPostsScore(ids)
+	if err != nil {
+		zap.L().Error("redis.GetPostsVote() failed", zap.Error(err))
+		return
+	}
+	for i, score := range scores {
+		data[i].Score = int64(score)
 	}
 	return
 }

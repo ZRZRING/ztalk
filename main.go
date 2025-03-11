@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"go.uber.org/zap"
 	"os"
 	"ztalk/internal/mysql"
 	"ztalk/internal/redis"
@@ -11,15 +10,28 @@ import (
 	"ztalk/pkg/settings"
 	"ztalk/pkg/translate"
 	"ztalk/pkg/utils"
+
+	"go.uber.org/zap"
 )
 
-// func syncLogger(l *zap.Logger) {
-// 	err := l.Sync()
-// 	if err != nil {
-// 		fmt.Printf("sync logger failed, message:%v\n", err)
-// 	}
-// }
+func syncLogger(l *zap.Logger) {
+	err := l.Sync()
+	if err != nil {
+		fmt.Printf("sync logger failed, message:%v\n", err)
+	}
+}
 
+// @title ztalk
+// @version 1.0
+// @description 在线论坛平台
+// @termsOfService http://swagger.io/terms/
+// @contact.name zrzring
+// @contact.url http://zrzring.com/support
+// @contact.email zrzring@126.com
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @host http://127.0.0.1
+// @BasePath /api/v1
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("need config file.eg: dev.yaml")

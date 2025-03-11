@@ -1,13 +1,11 @@
 package redis
 
 import (
+	"fmt"
 	"time"
+	"ztalk/internal/models"
 
 	"github.com/go-redis/redis"
-)
-
-const (
-	oneDayInSeconds = 24 * 3600
 )
 
 // CreatePost
@@ -19,7 +17,7 @@ func CreatePost(id int64) (err error) {
 		Member: id,
 	})
 	pipeline.ZAdd(KeyPostScoreZSet, redis.Z{
-		Score:  float64(oneDayInSeconds),
+		Score:  float64(models.SecondsInOneDay),
 		Member: id,
 	})
 	_, err = pipeline.Exec()
@@ -37,5 +35,41 @@ func GetPostCreateTime(id string) (data float64, err error) {
 // 获取指定帖子的投票分数
 func GetPostScore(id string) (data float64, err error) {
 	data, err = rdb.ZScore(KeyPostScoreZSet, id).Result()
+	return
+}
+
+// GetSortedPostsInRange
+// 根据参数获取帖子列表的ID
+func GetSortedPostIDsInRange(pattern string, start, end int64) (res []string, err error) {
+	var key string
+	if pattern == models.OrderScore {
+		key = KeyPostScoreZSet
+	} else {
+		key = KeyPostCreateTimeZSet
+	}
+	res, err = rdb.ZRevRange(key, start, end).Result()
+	return
+}
+
+// GetPostsScore
+// 获取指定帖子的投票得分
+func GetPostsScore(ids []string) (data []float64, err error) {
+	pipeline := rdb.Pipeline()
+	cmds := make([]*redis.FloatCmd, len(ids))
+	for i, id := range ids {
+		key := KeyPostScoreZSet
+		cmds[i] = pipeline.ZScore(key, id)
+	}
+	_, err = pipeline.Exec()
+	if err != nil {
+		return
+	}
+	for i, cmd := range cmds {
+		if cmd.Err() != nil {
+			err = fmt.Errorf("%s 分数信息错误：%v", ids[i], cmd.Err())
+			return
+		}
+		data = append(data, cmd.Val())
+	}
 	return
 }

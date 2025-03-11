@@ -1,13 +1,14 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"strconv"
 	"ztalk/internal/models"
 	"ztalk/internal/service"
 	"ztalk/pkg/request"
 	"ztalk/pkg/response"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func CreatePostHandler(c *gin.Context) {
@@ -49,9 +50,29 @@ func GetPostDetailHandler(c *gin.Context) {
 	response.Success(c, data)
 }
 
-func GetPostListHandler(c *gin.Context) {
-	page, size := request.GetPageInfo(c)
-	data, err := service.GetPostList(page, size)
+// GetPostsHandler 升级版帖子列表接口
+// @Summary 升级版帖子列表接口
+// @Description 可按社区按时间或分数排序查询帖子列表接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string false "Bearer 用户令牌"
+// @Param object query models.PostListParam false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /posts [get]
+func GetPostsHandler(c *gin.Context) {
+	p := &models.PostListParam{
+		Page:  1,
+		Size:  10,
+		Order: models.OrderTime,
+	}
+	if err := c.ShouldBindQuery(p); err != nil {
+		zap.L().Error("GetPostListHandler with invalid params", zap.Error(err))
+		response.Error(c, response.CodeInvalidParam)
+		return
+	}
+	data, err := service.GetPosts(p)
 	if err != nil {
 		zap.L().Error("service.GetPostList() failed", zap.Error(err))
 		response.Error(c, response.CodeServerBusy)
