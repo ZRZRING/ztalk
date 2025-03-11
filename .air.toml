@@ -7,7 +7,7 @@ tmp_dir = "tmp"
 
 [build]
 # 每次构建前运行的命令数组
-pre_cmd = []
+pre_cmd = ["swag init"]
 # 普通的 shell 命令。你也可以使用 `make`。
 cmd = "go build -o tmp/main.exe ."
 # 按下 ^C 后运行的命令数组

@@ -18,7 +18,7 @@ type VoteParam struct {
 
 // PostListParam 获取帖子列表 query string 参数
 type PostListParam struct {
-	CommunityID int64  `json:"community_id" form:"community_id"`  // 可以为空
+	CommunityID int64  `json:"community_id" form:"community_id"`  // 社区 ID
 	Page        int64  `json:"page" form:"page" example:"1"`      // 页码
 	Size        int64  `json:"size" form:"size" example:"10"`     // 每页数据量
 	Order       string `json:"order" form:"order" example:"time"` // 排序依据

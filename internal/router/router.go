@@ -6,7 +6,11 @@ import (
 	"ztalk/pkg/jwt"
 	"ztalk/pkg/logger"
 
+	_ "ztalk/docs"
+
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func Setup(mode string) (r *gin.Engine) {
@@ -22,16 +26,17 @@ func Setup(mode string) (r *gin.Engine) {
 		v1.GET("/ping", func(c *gin.Context) {
 			c.String(http.StatusOK, "pong")
 		})
-		v1.GET("/community", controller.CommunityHandler)
-		v1.GET("/community/:id", controller.CommunityDetailHandler)
-		v1.GET("/post/:id", controller.GetPostDetailHandler)
-		v1.GET("/posts", controller.GetPostsHandler)
-		v1.POST("/post", controller.CreatePostHandler)
-		v1.POST("/vote", controller.VoteHandler)
 		v1.Use(jwt.Auth())
 		{
+			v1.GET("/community", controller.CommunityHandler)
+			v1.GET("/community/:id", controller.CommunityDetailHandler)
+			v1.GET("/post/:id", controller.GetPostDetailHandler)
+			v1.GET("/posts", controller.GetPostsHandler)
+			v1.POST("/post", controller.CreatePostHandler)
+			v1.POST("/vote", controller.VoteHandler)
 		}
 	}
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "404 page not found")
 	})

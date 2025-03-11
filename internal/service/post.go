@@ -37,9 +37,15 @@ func GetPostDetail(id int64) (data *models.PostDetail, err error) {
 		zap.L().Error("mysql.GetCommunityByID() failed", zap.Error(err))
 		return
 	}
+	score, err := redis.GetPostScore(strconv.FormatInt(id, 10))
+	if err != nil {
+		zap.L().Error("redis.GetPostScore() failed", zap.Error(err))
+		return
+	}
 	data = &models.PostDetail{
-		AuthorName: user.Username,
 		Post:       post,
+		AuthorName: user.Username,
+		VoteScore:  int64(score),
 		Community:  community,
 	}
 	return
@@ -70,13 +76,13 @@ func GetPosts(p *models.PostListParam) (data []*models.PostDetail, err error) {
 		}
 		data = append(data, post)
 	}
-	scores, err := redis.GetPostsScore(ids)
-	if err != nil {
-		zap.L().Error("redis.GetPostsVote() failed", zap.Error(err))
-		return
-	}
-	for i, score := range scores {
-		data[i].Score = int64(score)
-	}
+	// scores, err := redis.GetPostsScore(ids)
+	// if err != nil {
+	// 	zap.L().Error("redis.GetPostsVote() failed", zap.Error(err))
+	// 	return
+	// }
+	// for i, score := range scores {
+	// 	data[i].VoteScore = int64(score)
+	// }
 	return
 }

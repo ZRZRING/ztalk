@@ -9,7 +9,8 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-// checkValidator 判断 err 是不是 validator.ValidationErrors 类型，是则翻译成中文
+// checkValidator
+// 判断 err 是不是 validator.ValidationErrors 类型，是则翻译成中文
 func checkValidator(c *gin.Context, err error) {
 	var errs validator.ValidationErrors
 	if !errors.As(err, &errs) {

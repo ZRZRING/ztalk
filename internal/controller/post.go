@@ -59,7 +59,7 @@ func GetPostDetailHandler(c *gin.Context) {
 // @Param Authorization header string false "Bearer 用户令牌"
 // @Param object query models.PostListParam false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} _ResponsePostList
+// @Success 200 {object} response.PostListType
 // @Router /posts [get]
 func GetPostsHandler(c *gin.Context) {
 	p := &models.PostListParam{

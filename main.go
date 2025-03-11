@@ -24,12 +24,6 @@ func syncLogger(l *zap.Logger) {
 // @title ztalk
 // @version 1.0
 // @description 在线论坛平台
-// @termsOfService http://swagger.io/terms/
-// @contact.name zrzring
-// @contact.url http://zrzring.com/support
-// @contact.email zrzring@126.com
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 // @host http://127.0.0.1
 // @BasePath /api/v1
 func main() {
