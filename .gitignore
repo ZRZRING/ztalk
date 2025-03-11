@@ -46,3 +46,6 @@ build/
 *.tmp
 *.bak
 *.orig
+/frontend/package-lock.json
+/frontend/pnpm-lock.yaml
+/frontend/dist/
