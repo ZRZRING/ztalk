@@ -1,4 +1,4 @@
-CREATE TABLE `post`
+CREATE TABLE IF NOT EXISTS `post`
 (
     `id`           bigint(20)                               NOT NULL AUTO_INCREMENT,
     `post_id`      bigint(20)                               NOT NULL COMMENT '帖子id',

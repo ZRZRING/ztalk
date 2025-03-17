@@ -1,5 +1,5 @@
 name: "ztalk"
-mode: "release"
+mode: "debug"
 port: 8080
 version: "v0.0.1"
 start_time: "2020-07-01"

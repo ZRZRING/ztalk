@@ -1,0 +1,132 @@
+basePath: /api/v1
+definitions:
+  models.Community:
+    properties:
+      create_time:
+        type: string
+      id:
+        type: integer
+      introduction:
+        type: string
+      name:
+        type: string
+    type: object
+  models.PostDetail:
+    properties:
+      author_id:
+        description: 作者id
+        type: integer
+      author_name:
+        type: string
+      community:
+        $ref: '#/definitions/models.Community'
+      community_id:
+        description: 社区id
+        type: integer
+      content:
+        description: 帖子内容
+        type: string
+      create_time:
+        description: 帖子创建时间
+        type: string
+      id:
+        description: 帖子id
+        example: "0"
+        type: string
+      status:
+        description: 帖子状态
+        type: integer
+      title:
+        description: 帖子标题
+        type: string
+      vote_num:
+        type: integer
+    required:
+    - community_id
+    - content
+    - title
+    type: object
+  response.PostListType:
+    properties:
+      code:
+        allOf:
+        - $ref: '#/definitions/response.ResCode'
+        description: 业务响应状态码
+      data:
+        description: 数据
+        items:
+          $ref: '#/definitions/models.PostDetail'
+        type: array
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  response.ResCode:
+    enum:
+    - 1000
+    - 1001
+    - 1002
+    - 1003
+    - 1004
+    - 1005
+    - 1006
+    - 1007
+    type: integer
+    x-enum-varnames:
+    - CodeSuccess
+    - CodeInvalidParam
+    - CodeUserExist
+    - CodeUserNotExist
+    - CodeInvalidPassword
+    - CodeServerBusy
+    - CodeNeedLogin
+    - CodeInvalidToken
+host: http://127.0.0.1
+info:
+  contact: {}
+  description: 在线论坛平台
+  title: ztalk
+  version: "1.0"
+paths:
+  /posts:
+    get:
+      consumes:
+      - application/json
+      description: 可按社区按时间或分数排序查询帖子列表接口
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        type: string
+      - description: 社区 ID
+        in: query
+        name: community_id
+        type: integer
+      - description: 排序依据
+        example: time
+        in: query
+        name: order
+        type: string
+      - description: 页码
+        example: 1
+        in: query
+        name: page
+        type: integer
+      - description: 每页数据量
+        example: 10
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PostListType'
+      security:
+      - ApiKeyAuth: []
+      summary: 升级版帖子列表接口
+      tags:
+      - 帖子相关接口
+swagger: "2.0"

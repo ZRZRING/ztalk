@@ -9,8 +9,6 @@ import (
 	_ "ztalk/docs"
 
 	"github.com/gin-gonic/gin"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func Setup(mode string) (r *gin.Engine) {
@@ -20,6 +18,11 @@ func Setup(mode string) (r *gin.Engine) {
 	r = gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 	{
+		r.LoadHTMLFiles("templates/index.html")
+		r.Static("/static", "static")
+		r.GET("/", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "index.html", nil)
+		})
 		v1 := r.Group("/api/v1")
 		v1.POST("/signup", controller.SignUpHandler)
 		v1.POST("/login", controller.LoginHandler)
@@ -36,7 +39,7 @@ func Setup(mode string) (r *gin.Engine) {
 			v1.POST("/vote", controller.VoteHandler)
 		}
 	}
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	// r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "404 page not found")
 	})

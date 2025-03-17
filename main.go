@@ -46,7 +46,9 @@ func main() {
 		fmt.Printf("logger\t初始化失败, message:%v\n", err)
 		return
 	}
-	// defer syncLogger(zap.L())
+	if cfg.Mode == "release" {
+		defer syncLogger(zap.L())
+	}
 	zap.L().Info("logger\t初始化完成")
 
 	// 初始化 MySQL 连接
@@ -87,6 +89,8 @@ func main() {
 	}
 	zap.L().Info("路由启动完成")
 
-	// 服务器成功关闭，打印退出日志（失效）
-	// zap.L().Info("Server exiting")
+	// 服务器成功关闭，打印退出日志
+	if cfg.Mode == "release" {
+		zap.L().Info("Server exiting")
+	}
 }

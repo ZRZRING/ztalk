@@ -1,4 +1,4 @@
-CREATE TABLE `community`
+CREATE TABLE IF NOT EXISTS `community`
 (
     `id`             int(11)                                 NOT NULL AUTO_INCREMENT,
     `community_id`   int(10) unsigned                        NOT NULL,
