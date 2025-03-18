@@ -1,7 +1,3 @@
-CREATE DATABASE IF NOT EXISTS ztalk;
-
-use ztalk;
-
 CREATE TABLE IF NOT EXISTS `community`
 (
     `id`             int(11)                                 NOT NULL AUTO_INCREMENT,

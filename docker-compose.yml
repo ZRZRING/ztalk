@@ -1,6 +1,6 @@
 services:
   ztalk-mysql:
-    image: mysql:latest
+    image: mysql:9.2.0
     container_name: ztalk-mysql
     ports:
       - "3306:3306"
@@ -10,18 +10,21 @@ services:
       MYSQL_PASSWORD: "123456"
       MYSQL_NATIVE_PASSWORD: "ON"
     volumes:
-      - ./init.sql:/data/application/init.sql
+      - ./db/init.sql:/data/application/init.sql
   ztalk-redis:
-    image: redis:latest
+    image: redis:7.4.2
     container_name: ztalk-redis
     ports:
       - "6379:6379"
   ztalk-app:
     build: .
-    image: ztalk:latest
+    image: ztalk:1.0.0
     pull_policy: never
     container_name: ztalk-app
-    command: sh -c "./wait-for-it.sh ztalk-mysql:3306 -- ./wait-for-it.sh ztalk-redis:6379 -- ./ztalk ./config/debug.yaml"
+    command: >
+      sh -c "./wait-for-it.sh ztalk-mysql:3306 -- \
+      ./wait-for-it.sh ztalk-redis:6379 -- \
+      ./ztalk ./config/debug.yaml"
     depends_on:
       - ztalk-mysql
       - ztalk-redis

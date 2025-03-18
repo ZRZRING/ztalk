@@ -18,7 +18,7 @@ RUN go build -o ztalk .
 
 FROM debian:bullseye-slim
 
-COPY ./wait-for-it.sh ./wait-for-it.sh
+COPY ./script/wait-for-it.sh ./wait-for-it.sh
 COPY ./templates ./templates
 COPY ./static ./static
 COPY ./config ./config
