@@ -12,7 +12,7 @@ import (
 	"runtime/debug"
 	"strings"
 	"time"
-	"ztalk/pkg/settings"
+	"ztalk/settings"
 )
 
 func Init(cfg *settings.LogConfig, mode string) (err error) {

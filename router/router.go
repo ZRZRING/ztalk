@@ -2,11 +2,10 @@ package router
 
 import (
 	"net/http"
-	"ztalk/internal/controller"
-	"ztalk/pkg/jwt"
-	"ztalk/pkg/logger"
-
 	_ "ztalk/docs"
+	"ztalk/internal/controller"
+	"ztalk/logger"
+	"ztalk/pkg/jwt"
 
 	"github.com/gin-gonic/gin"
 )

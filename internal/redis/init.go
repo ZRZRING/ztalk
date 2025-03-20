@@ -2,7 +2,7 @@ package redis
 
 import (
 	"fmt"
-	"ztalk/pkg/settings"
+	"ztalk/settings"
 
 	"github.com/go-redis/redis"
 )

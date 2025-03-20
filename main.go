@@ -5,11 +5,11 @@ import (
 	"os"
 	"ztalk/internal/mysql"
 	"ztalk/internal/redis"
-	"ztalk/internal/router"
-	"ztalk/pkg/logger"
-	"ztalk/pkg/settings"
+	"ztalk/logger"
 	"ztalk/pkg/translate"
 	"ztalk/pkg/utils"
+	"ztalk/router"
+	"ztalk/settings"
 
 	"go.uber.org/zap"
 )
