@@ -23,8 +23,8 @@ services:
     pull_policy: never
     container_name: ztalk-app
     command: >
-      sh -c "./wait-for-it.sh ztalk-mysql:3306 -- \
-             ./wait-for-it.sh ztalk-redis:6379 -- \
+      sh -c "./wait-for-it.sh -t 120 ztalk-mysql:3306 -- \
+             ./wait-for-it.sh -t 120 ztalk-redis:6379 -- \
              ./ztalk ./config/release.yaml"
     depends_on:
       - ztalk-mysql
