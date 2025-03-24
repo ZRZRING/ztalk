@@ -10,7 +10,8 @@ services:
       MYSQL_PASSWORD: "123456"
       MYSQL_NATIVE_PASSWORD: "ON"
     volumes:
-      - ./db/init.sql:/data/application/init.sql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
   ztalk-redis:
     image: redis:7.4.2
     container_name: ztalk-redis
@@ -23,10 +24,12 @@ services:
     container_name: ztalk-app
     command: >
       sh -c "./wait-for-it.sh ztalk-mysql:3306 -- \
-      ./wait-for-it.sh ztalk-redis:6379 -- \
-      ./ztalk ./config/debug.yaml"
+             ./wait-for-it.sh ztalk-redis:6379 -- \
+             ./ztalk ./config/release.yaml"
     depends_on:
       - ztalk-mysql
       - ztalk-redis
     ports:
       - "8080:8080"
+volumes:
+  mysql_data:

@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS `ztalk`;
+
+USE ztalk;
+
 CREATE TABLE IF NOT EXISTS `community`
 (
     `id`             int(11)                                 NOT NULL AUTO_INCREMENT,
@@ -48,3 +52,15 @@ CREATE TABLE IF NOT EXISTS `user`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
+
+INSERT INTO `community`
+VALUES ('1', '1', 'First', 'Golang', '2016-11-01 08:10:10', '2016-11-01 08:10:10');
+INSERT INTO `community`
+VALUES ('2', '2', 'Second', 'qwq', '2020-01-01 08:00:00', '2020-01-01 08:00:00');
+INSERT INTO `community`
+VALUES ('3', '3', 'Third', 'asdf', '2018-08-07 08:30:00', '2018-08-07 08:30:00');
+INSERT INTO `community`
+VALUES ('4', '4', 'Fourth', 'zrzring', '2016-01-01 08:00:00', '2016-01-01 08:00:00');
+
+INSERT INTO `user`
+VALUES ('1', '614030006137393152', 'zrzring', '7a727a72696e67f7f29b21dbc871560b63eb5dff8f58f4', 'zrzring@qq.com', '1', '2025-01-01 00:00:00', '2025-01-01 00:00:00');

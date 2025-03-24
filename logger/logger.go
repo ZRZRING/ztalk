@@ -1,10 +1,7 @@
 package logger
 
 import (
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"gopkg.in/natefinch/lumberjack.v2"
+	"errors"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -13,6 +10,11 @@ import (
 	"strings"
 	"time"
 	"ztalk/settings"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 func Init(cfg *settings.LogConfig, mode string) (err error) {
@@ -34,8 +36,11 @@ func Init(cfg *settings.LogConfig, mode string) (err error) {
 			zapcore.NewCore(encoder, writeSyncer, lv),
 			zapcore.NewCore(consoleEncoder, zapcore.Lock(os.Stdout), zapcore.DebugLevel),
 		)
-	} else {
+	} else if mode == "release" || mode == "debug" {
 		core = zapcore.NewCore(encoder, writeSyncer, lv)
+	} else {
+		err = errors.New("非法模式参数：" + mode)
+		return
 	}
 	lg := zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(lg)

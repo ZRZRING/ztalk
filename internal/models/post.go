@@ -10,6 +10,7 @@ type Post struct {
 	Title       string    `json:"title" db:"title" binding:"required"`               // 帖子标题
 	Content     string    `json:"content" db:"content" binding:"required"`           // 帖子内容
 	CreateTime  time.Time `json:"create_time" db:"create_time"`                      // 帖子创建时间
+	UpdateTime  time.Time `json:"update_time" db:"update_time"`                      // 帖子修改时间
 }
 
 type PostDetail struct {
